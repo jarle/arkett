@@ -27,9 +27,9 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "start": "react-scripts start",
     "prebuild": "cd ckeditor5-31.1.0-sbw87qxbk62n && npm run build",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
