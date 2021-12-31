@@ -14,7 +14,7 @@ export default function TextEditor() {
             console.log("Synchronizing to cloud...")
             return supabase
                 .from("content")
-                .update({ "content": content })
+                .update({ "content": editor.getData() })
                 .match({ owner: user.id })
                 .then(x => console.log("Synchronized"))
         }
