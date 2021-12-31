@@ -1,16 +1,16 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
+import { createContext, useContext, useEffect } from "react";
+import { supabase } from "../utils/supabaseClient";
+import useStickyState from "../utils/useStickyState";
 import { AuthContext } from "./AuthProvider";
 
 export const EditorContentContext = createContext()
 
 export default function EditorContentProvider({ children }) {
-    const [content, setContent] = useState("")
+    const [content, setContent] = useStickyState("", 'content')
     const { user } = useContext(AuthContext)
 
     useEffect(() => {
         if (user) {
-            console.log("Fetching for ", user)
             supabase
                 .from("content")
                 .select()
@@ -18,7 +18,7 @@ export default function EditorContentProvider({ children }) {
                 .limit(1)
                 .then(({ data }) => setContent(data[0].content))
         }
-    }, [user])
+    }, [user, user?.id, setContent])
 
     return (
         <EditorContentContext.Provider value={{ content, setContent }}>

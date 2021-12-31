@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Auth from './components/Auth';
 import AuthProvider, { AuthContext } from './state/AuthProvider';
 import EditorContentProvider from './state/EditorContentProvider';
-import TextEditor from './TextEditor';
+import TextEditor from './components/TextEditor';
 
 
 const MainAppBody = () => {
@@ -11,9 +11,15 @@ const MainAppBody = () => {
     (
       <EditorContentProvider>
         <TextEditor />
+        <Auth />
       </EditorContentProvider>
     ) :
-    <div>not logged in</div>
+    (
+      <EditorContentProvider>
+        <div>not logged in</div>
+        <Auth />
+      </EditorContentProvider>
+    )
 }
 
 const App = () => {
@@ -22,7 +28,6 @@ const App = () => {
       <h2>arkett</h2>
       <AuthProvider>
         <MainAppBody />
-        <Auth />
       </AuthProvider>
     </div>
   );

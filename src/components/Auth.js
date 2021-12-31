@@ -1,9 +1,11 @@
 import { useContext } from 'react'
 import { AuthContext } from '../state/AuthProvider'
-import { supabase } from '../supabaseClient'
+import { EditorContentContext } from '../state/EditorContentProvider'
+import { supabase } from '../utils/supabaseClient'
 
 export default function Auth() {
   const { session } = useContext(AuthContext)
+  const { setContent } = useContext(EditorContentContext)
 
   const login = () => {
     supabase.auth.signIn({
@@ -12,6 +14,7 @@ export default function Auth() {
   }
 
   const logout = () => {
+    setContent("")
     supabase.auth.signOut()
   }
 
