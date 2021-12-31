@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react';
+import Auth from './components/Auth';
+import AuthProvider, { AuthContext } from './state/AuthProvider';
+import EditorContentProvider from './state/EditorContentProvider';
+import TextEditor from './TextEditor';
 
-function App() {
+
+const MainAppBody = () => {
+  const { session } = useContext(AuthContext)
+  return session ?
+    (
+      <EditorContentProvider>
+        <TextEditor />
+      </EditorContentProvider>
+    ) :
+    <div>not logged in</div>
+}
+
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>arkett</h2>
+      <AuthProvider>
+        <MainAppBody />
+        <Auth />
+      </AuthProvider>
     </div>
   );
 }
