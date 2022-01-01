@@ -3,14 +3,15 @@ import CustomEditor from 'ckeditor5-custom-build';
 import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { EditorContentContext } from '../state/EditorContentProvider';
+import '../styles/editorstyling.css';
 import { supabase } from '../utils/supabaseClient';
 
 export default function TextEditor() {
     const { content, setContent } = useContext(EditorContentContext)
-    const { user } = useContext(AuthContext)
+    const { session, user } = useContext(AuthContext)
 
     const handleSave = editor => {
-        if (user) {
+        if (session && user) {
             console.log("Synchronizing to cloud...")
             return supabase
                 .from("content")

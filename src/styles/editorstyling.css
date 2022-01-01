@@ -1,0 +1,8 @@
+.ck-focused { 
+    outline: unset !important;
+    border: unset !important;
+    box-shadow: unset !important;
+}
+.ck.ck-editor__editable_inline {
+    border: none !important;
+}

@@ -1,26 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Auth from './components/Auth';
-import AuthProvider, { AuthContext } from './state/AuthProvider';
-import EditorContentProvider from './state/EditorContentProvider';
 import TextEditor from './components/TextEditor';
+import AuthProvider from './state/AuthProvider';
+import EditorContentProvider from './state/EditorContentProvider';
+import './styles/app.css';
 
 
-const MainAppBody = () => {
-  const { session } = useContext(AuthContext)
-  return session ?
-    (
-      <EditorContentProvider>
-        <TextEditor />
-        <Auth />
-      </EditorContentProvider>
-    ) :
-    (
-      <EditorContentProvider>
-        <div>not logged in</div>
-        <Auth />
-      </EditorContentProvider>
-    )
-}
+const MainAppBody = () => (
+  <EditorContentProvider>
+    <TextEditor />
+    <Auth />
+  </EditorContentProvider>
+)
 
 const App = () => {
   return (

@@ -7,9 +7,12 @@ export default function Auth() {
   const { session } = useContext(AuthContext)
   const { setContent } = useContext(EditorContentContext)
 
+  const URL = process.env.REACT_APP_VERCEL_URL;
+
   const login = () => {
     supabase.auth.signIn({
-      provider: "github"
+      provider: "github",
+      redirectTo: URL
     })
   }
 
