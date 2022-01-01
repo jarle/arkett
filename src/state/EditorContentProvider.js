@@ -11,6 +11,7 @@ export default function EditorContentProvider({ children }) {
 
     useEffect(() => {
         if (user) {
+            console.log("Fetch latest from remote for " + user.email)
             supabase
                 .from("content")
                 .select()

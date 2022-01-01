@@ -16,7 +16,6 @@ const MainAppBody = () => (
 const App = () => {
   return (
     <div className="App">
-      <h2>arkett</h2>
       <AuthProvider>
         <MainAppBody />
       </AuthProvider>

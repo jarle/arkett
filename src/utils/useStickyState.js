@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { supabase } from "./supabaseClient";
 
 export default function useStickyState(defaultValue, key) {
     const previousValue = useRef(null)
@@ -10,25 +11,43 @@ export default function useStickyState(defaultValue, key) {
             : defaultValue;
     });
 
-    const handleChangeInStorage = (event) => {
-        if (event.key === 'content' && event.newValue !== previousValue) {
+    const handleChangeInStorage = event => {
+        if (event.key === 'content' && (event.newValue !== previousValue.current)) {
             console.log(event)
             console.log(event.newValue)
             setValue(JSON.parse(event.newValue))
         }
     }
+
+    const handleRemoteChange = event => {
+        if (event.new.content !== previousValue.current) {
+            console.log("Setting new value from remote")
+            setValue(event.new.content)
+        }
+    }
+
+    useEffect(() => {
+        const mySubscription = supabase
+            .from('content')
+            .on('*', handleRemoteChange)
+            .subscribe()
+
+        return () => mySubscription.unsubscribe()
+    }, [])
+
     useEffect(() => {
         window.addEventListener('storage', handleChangeInStorage)
         return () => window.removeEventListener('storage', handleChangeInStorage)
     }, [])
 
     useEffect(() => {
-        console.log("Save to local storage")
         const newValue = JSON.stringify(value)
-        if (newValue !== previousValue.current) {
-            previousValue.current = newValue
+        const currentSaved = window.localStorage.getItem(key)
+        if (newValue !== currentSaved) {
+            console.log("Save to local storage")
             window.localStorage.setItem(key, newValue);
         }
+        previousValue.current = newValue
 
     }, [key, value]);
 

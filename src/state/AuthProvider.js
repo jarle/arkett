@@ -12,9 +12,9 @@ export default function AuthProvider({ children }) {
             setSession(supabase.auth.session())
             setUser(supabase.auth.session()?.user)
 
-            supabase.auth.onAuthStateChange((_event, session) => {
-                setSession(session)
-                setUser(session?.user)
+            supabase.auth.onAuthStateChange((_event, newSession) => {
+                setSession(newSession)
+                setUser(newSession?.user)
             })
         },
         []
