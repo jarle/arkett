@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { EditorContentContext } from '../state/EditorContentProvider';
 import { supabase } from '../utils/supabaseClient';
+import { Center, Container, Spinner } from '@chakra-ui/react'
+import('@ckeditor/ckeditor5-theme-lark/theme/theme.css')
 
 export default function TextEditor() {
     const { content, setContent } = useContext(EditorContentContext)
@@ -21,6 +23,8 @@ export default function TextEditor() {
                 CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
                 CustomEditor: require("ckeditor5-custom-build")
             };
+            //console.log(editorRef.current.CustomEditor.builtinPlugins.map(p => p.pluginName))
+            console.log(editorRef.current)
         }
     }, []);
 
@@ -50,16 +54,37 @@ export default function TextEditor() {
                 onChange={(event, editor) => {
                     setContent(editor.getData())
                 }}
-            /> : null
+            /> : (
+                <Container>
+                    <Spinner/>
+                </Container>
+            )
     )
 
     useEffect(() => {
         return () => {
-            if (typeof editor === CKEditor) {
-                editor.editor?.destroy()
-            }
+            editor.editor?.destroy()
         }
-    })
+    }, [])
 
-    return editor
+
+    return (
+        <Center>
+            <Container
+                rounded={'18px'}
+                opacity={'80%'}
+                style={{ background: 'white' }}
+                marginLeft={'10'}
+                marginRight={'10'}
+                width={'80vw'}
+                maxWidth={'60em'}
+                minHeight={'container.md'}
+                overflow={'auto'}
+                shadow={'lg'}
+            >
+                {editor}
+            </Container>
+
+        </Center>
+    )
 }

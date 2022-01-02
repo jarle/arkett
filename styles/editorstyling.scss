@@ -1,0 +1,67 @@
+.ck-focused { 
+    outline: unset !important;
+    border: unset !important;
+    box-shadow: unset !important;
+}
+.ck.ck-editor__editable_inline {
+    border: none !important;
+}
+
+.ck-content > blockquote,
+.ck-content > dl,
+.ck-content > dd,
+.ck-content > h1,
+.ck-content > h2,
+.ck-content > h3,
+.ck-content > h4,
+.ck-content > h5,
+.ck-content > h6,
+.ck-content > hr,
+.ck-content > figure,
+.ck-content > p,
+.ck-content > pre {
+  margin: revert;
+}
+
+.ck-content > * > a:link, 
+.ck-content > * > a:visited, 
+.ck-content > * > a:hover, 
+.ck-content > * > a:active {
+  text-decoration: revert;
+  color: revert;
+}
+
+.ck-content > ol,
+.ck-content > ul {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+
+  list-style-position: revert;
+}
+
+// Revert indentation for lists
+.ck-content > ul {
+  & li {
+    & ul {
+      list-style: revert;
+      margin: revert;
+      padding: revert;
+      list-style-position: revert;
+    }
+  }
+}
+
+.ck-content > table {
+  border-collapse: revert;
+}
+
+.ck-content > h1,
+.ck-content > h2,
+.ck-content > h3,
+.ck-content > h4,
+.ck-content > h5,
+.ck-content > h6 {
+  font-size: revert;
+  font-weight: revert;
+}

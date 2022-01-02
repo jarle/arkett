@@ -1,3 +1,5 @@
+import { Button } from '@chakra-ui/react'
+import Link from 'next/link'
 import { useContext } from 'react'
 import { AuthContext } from '../state/AuthProvider'
 import { EditorContentContext } from '../state/EditorContentProvider'
@@ -7,26 +9,36 @@ export default function Auth() {
   const { session } = useContext(AuthContext)
   const { setContent } = useContext(EditorContentContext)
 
-  const URL = process.env.NEXT_PUBLIC_VERCEL_URL;
-
-  const login = () => {
-    supabase.auth.signIn({
-      provider: "github",
-      redirectTo: URL
-    })
-  }
-
   const logout = () => {
-    setContent("")
+    const logoutContent = `
+    <h1>Logged out</h1>
+    <p>Logged out successfully.</p>
+    `
+    setContent(logoutContent)
     supabase.auth.signOut()
   }
 
   const logOutButton = () => {
-    return <button onClick={logout}>Log out</button>
+    return (
+      <Button
+        onClick={logout}
+        shadow={'base'}
+      >
+        Log out
+      </Button>
+    )
   }
 
   const logInButton = () => {
-    return <button onClick={login}>Log in</button>
+    return (
+      <Link href='login'>
+        <Button
+          shadow={'base'}
+        >
+          Log in
+        </Button>
+      </Link>
+    )
   }
 
   return (

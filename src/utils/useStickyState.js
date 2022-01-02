@@ -26,7 +26,7 @@ export default function useStickyState(defaultValue, key) {
     const handleRemoteChange = event => {
         if (event.new.content !== previousValue.current) {
             console.log("Setting new value from remote")
-            setValue(event.new.content)
+            //setValue(event.new.content)
         }
     }
 

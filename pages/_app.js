@@ -1,27 +1,23 @@
+import { ChakraProvider } from '@chakra-ui/react';
+import '@fontsource/nunito';
+import '@fontsource/caveat';
 import React from 'react';
-import Auth from '../src/components/Auth';
-import TextEditor from '../src/components/TextEditor';
+import '../styles/app.css';
+import '../styles/editorstyling.scss';
+import { theme } from '../styles/theme';
 import AuthProvider from '../src/state/AuthProvider';
 import EditorContentProvider from '../src/state/EditorContentProvider';
-import '../styles/app.css';
-import '../styles/editorstyling.css';
 
-
-const MainAppBody = () => (
-  <EditorContentProvider>
-    <TextEditor />
-    <Auth />
-  </EditorContentProvider>
-)
-
-const App = () => {
+function MyApp({ Component, pageProps }) {
   return (
-    <div className="App">
+    <ChakraProvider theme={theme}>
       <AuthProvider>
-        <MainAppBody />
+        <EditorContentProvider>
+          <Component {...pageProps} />
+        </EditorContentProvider>
       </AuthProvider>
-    </div>
-  );
+    </ChakraProvider>
+  )
 }
 
-export default App;
+export default MyApp
