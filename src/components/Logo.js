@@ -1,7 +1,7 @@
 import { Center, Text, LinkBox, LinkOverlay } from '@chakra-ui/react'
 
 export default function Logo() {
-    const URL = 'localhost:3000'
+    const URL = process.env.NEXT_PUBLIC_VERCEL_URL;
     return (
         <Center>
             <LinkBox>
