@@ -1,9 +1,6 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import CustomEditor from 'ckeditor5-custom-build';
 import React, { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { EditorContentContext } from '../state/EditorContentProvider';
-import '../styles/editorstyling.css';
 import { supabase } from '../utils/supabaseClient';
 
 export default function TextEditor() {
@@ -11,9 +8,21 @@ export default function TextEditor() {
     const { user } = useContext(AuthContext)
     const userRef = useRef()
 
+    const editorRef = useRef();
+    const { CKEditor, CustomEditor } = editorRef.current || {};
+
     useEffect(() => {
         userRef.current = user
     }, [user])
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            editorRef.current = {
+                CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
+                CustomEditor: require("ckeditor5-custom-build")
+            };
+        }
+    }, []);
 
 
     const handleSave = async editor => {
@@ -29,22 +38,27 @@ export default function TextEditor() {
     }
 
     const editor = (
-        <CKEditor
-            editor={CustomEditor}
-            data={content}
-            config={{
-                autosave: {
-                    save: handleSave
-                }
-            }}
-            onChange={(event, editor) => {
-                setContent(editor.getData())
-            }}
-        />
+        CustomEditor ?
+            <CKEditor
+                editor={CustomEditor}
+                data={content}
+                config={{
+                    autosave: {
+                        save: handleSave
+                    }
+                }}
+                onChange={(event, editor) => {
+                    setContent(editor.getData())
+                }}
+            /> : null
     )
 
     useEffect(() => {
-        return () => editor?.editor?.destroy()
+        return () => {
+            if (typeof editor === CKEditor) {
+                editor.editor?.destroy()
+            }
+        }
     })
 
     return editor

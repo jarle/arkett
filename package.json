@@ -3,52 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-autosave": "^31.1.0",
-    "@ckeditor/ckeditor5-basic-styles": "^31.1.0",
-    "@ckeditor/ckeditor5-build-balloon": "^31.1.0",
-    "@ckeditor/ckeditor5-build-classic": "^31.1.0",
-    "@ckeditor/ckeditor5-dev-utils": "^27.1.1",
-    "@ckeditor/ckeditor5-editor-classic": "^31.1.0",
-    "@ckeditor/ckeditor5-essentials": "^31.1.0",
-    "@ckeditor/ckeditor5-paragraph": "^31.1.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
-    "@ckeditor/ckeditor5-theme-lark": "^31.1.0",
-    "@craco/craco": "^6.4.3",
     "@supabase/supabase-js": "^1.29.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
     "ckeditor5-custom-build": "file:ckeditor5",
-    "raw-loader": "^3.1.0",
+    "next": "^12.0.7",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-quill": "^2.0.0-beta.4",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^2.1.2"
+    "react-dom": "^17.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "next dev",
+    "start": "next start",
     "prebuild": "cd ckeditor5 && npm run build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "next build",
+    "buildd": "next build",
+    "test": "next test"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-next": "12.0.7"
   }
 }

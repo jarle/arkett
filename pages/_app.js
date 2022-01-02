@@ -1,9 +1,10 @@
 import React from 'react';
-import Auth from './components/Auth';
-import TextEditor from './components/TextEditor';
-import AuthProvider from './state/AuthProvider';
-import EditorContentProvider from './state/EditorContentProvider';
-import './styles/app.css';
+import Auth from '../src/components/Auth';
+import TextEditor from '../src/components/TextEditor';
+import AuthProvider from '../src/state/AuthProvider';
+import EditorContentProvider from '../src/state/EditorContentProvider';
+import '../styles/app.css';
+import '../styles/editorstyling.css';
 
 
 const MainAppBody = () => (

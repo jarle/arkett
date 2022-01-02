@@ -5,6 +5,10 @@ export default function useStickyState(defaultValue, key) {
     const previousValue = useRef(null)
 
     const [value, setValue] = useState(() => {
+        if (typeof window === 'undefined') {
+            return defaultValue
+        }
+
         const stickyValue = window.localStorage.getItem(key);
         return stickyValue !== null
             ? JSON.parse(stickyValue)
@@ -36,16 +40,16 @@ export default function useStickyState(defaultValue, key) {
     }, [])
 
     useEffect(() => {
-        window.addEventListener('storage', handleChangeInStorage)
-        return () => window.removeEventListener('storage', handleChangeInStorage)
+        window?.addEventListener('storage', handleChangeInStorage)
+        return () => window?.removeEventListener('storage', handleChangeInStorage)
     }, [])
 
     useEffect(() => {
         const newValue = JSON.stringify(value)
-        const currentSaved = window.localStorage.getItem(key)
+        const currentSaved = window?.localStorage.getItem(key)
         if (newValue !== currentSaved) {
             console.log("Save to local storage")
-            window.localStorage.setItem(key, newValue);
+            window?.localStorage.setItem(key, newValue);
         }
         previousValue.current = newValue
 
