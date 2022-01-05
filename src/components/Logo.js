@@ -1,11 +1,10 @@
 import { Center, Text, LinkBox, LinkOverlay } from '@chakra-ui/react'
 
 export default function Logo() {
-    const URL = process.env.NEXT_PUBLIC_VERCEL_URL;
     return (
         <Center>
             <LinkBox>
-                <LinkOverlay href={URL}>
+                <LinkOverlay href='#'>
                     <Text
                         fontFamily={'caveat'}
                         fontWeight={'bold'}
