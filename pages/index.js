@@ -1,20 +1,26 @@
-import { VStack } from '@chakra-ui/react';
+import { Box, Center, VStack } from '@chakra-ui/react';
 import Head from 'next/head';
 import { React } from 'react';
-import Auth from '../src/components/Auth';
+import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
+import AccountMenu from '../src/components/Menu';
 import TextEditor from '../src/components/TextEditor';
 
 const MainAppBody = () => (
-  <VStack
-    height={'100vh'}
-    width={'100vw'}
-    spacing={'5'}
-  >
-    <Logo />
-    <TextEditor />
-    <Auth />
-  </VStack>
+  <Box height={'100vh'} width={'100vw'} >
+    <Box padding={'2'} position={'absolute'} top={'0'} left={'0'}>
+      <AccountMenu />
+    </Box>
+
+    <VStack spacing={'5'} >
+      <Center>
+        <Logo />
+      </Center>
+
+      <TextEditor />
+      <LoginButton />
+    </VStack>
+  </Box>
 )
 
 const App = () => {
@@ -30,7 +36,7 @@ export default function Home() {
     <div>
       <Head>
         <title>arkett</title>
-        <meta name="description" content="arkett - simple note taking" />
+        <meta name="description" content="arkett - the minimalist note editor" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

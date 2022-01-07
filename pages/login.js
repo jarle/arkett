@@ -1,15 +1,13 @@
-import { Button, Center, Stack, Text } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { FaApple, FaFacebook } from 'react-icons/fa';
+import { Button, Center, Container, Heading, List, ListIcon, ListItem, Text, UnorderedList, VStack } from '@chakra-ui/react';
+import { FaApple, FaCloud, FaFacebook, FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { AuthContext } from '../src/state/AuthProvider';
-import { EditorContentContext } from '../src/state/EditorContentProvider';
 import { supabase } from '../src/utils/supabaseClient';
 
-export default function All() {
-    const { session } = useContext(AuthContext)
-    const { setContent } = useContext(EditorContentContext)
+import Logo from '../src/components/Logo'
+import { CheckIcon } from '@chakra-ui/icons';
 
+
+export default function All() {
     const URL = process.env.NEXT_PUBLIC_VERCEL_URL;
     const login = (provider) => {
         supabase.auth.signIn({
@@ -19,41 +17,97 @@ export default function All() {
     }
 
     return (
-        <Center p={8} height={'100vh'}>
-            <Stack spacing={2} align={'center'} maxW={'md'} w={'full'}>
-                <Button
-                    w={'full'}
-                    background={'white'}
-                    variant={'outline'}
-                    leftIcon={<FcGoogle />}
-                    onClick={() => login('google')}
-                >
-                    <Center>
-                        <Text>Sign in with Google</Text>
-                    </Center>
-                </Button>
-                <Button
-                    w={'full'}
-                    background={'black'}
-                    colorScheme={'apple'}
-                    leftIcon={<FaApple />}
-                    onClick={() => login('apple')}
-                >
-                    <Center>
-                        <Text>Sign in with iCloud</Text>
-                    </Center>
-                </Button>
-                <Button
-                    w={'full'}
-                    colorScheme={'facebook'}
-                    leftIcon={<FaFacebook />}
-                    onClick={() => login('facebook')}
-                >
-                    <Center>
-                        <Text>Continue with Facebook</Text>
-                    </Center>
-                </Button>
-            </Stack>
-        </Center>
+        <Container height='100vh'>
+            <VStack spacing={'20'}>
+                <Logo />
+                <Center>
+                    <VStack spacing={'50'}>
+                        <Container
+                            rounded={'md'}
+                            background={'white'}
+                            shadow={'lg'}
+                            padding={'6'}
+                            variant={'outline'}
+                        >
+                            <Heading size={'md'} marginBottom={'3'} > Sign in to arkett to: </Heading>
+                            <List spacing={'2'}>
+                                <ListItem>
+                                    <ListIcon as={CheckIcon} color='green.500' />
+                                    Back up existing notes
+                                </ListItem>
+                                <ListItem>
+                                    <ListIcon as={CheckIcon} color='green.500' />
+                                    Synchronize notes between devices
+                                </ListItem>
+                                <ListItem>
+                                    <ListIcon as={CheckIcon} color='green.500' />
+                                    Publish arketts
+                                </ListItem>
+                                <ListItem>
+                                    ...and much more!
+                                </ListItem>
+                            </List>
+                        </Container>
+                        <Container
+                            padding={'4'}
+                            rounded={'lg'}
+                            width={'md'}
+                        >
+                            <VStack spacing={2} align={'center'} w={'full'}>
+                                <Button
+                                    w={'full'}
+                                    background={'white'}
+                                    variant={'outline'}
+                                    shadow={'md'}
+                                    leftIcon={<FcGoogle />}
+                                    onClick={() => login('google')}
+                                >
+                                    <Center>
+                                        <Text>Sign in with Google</Text>
+                                    </Center>
+                                </Button>
+                                {/* <Button
+                                    w={'full'}
+                                    backgroundColor={'black'}
+                                    colorScheme={'apple'}
+                                    shadow={'md'}
+                                    leftIcon={<FaApple />}
+                                    onClick={() => login('apple')}
+                                >
+                                    <Center>
+                                        <Text>Sign in with Apple</Text>
+                                    </Center>
+                                </Button> */}
+                                <Button
+                                    w={'full'}
+                                    colorScheme={'facebook'}
+                                    shadow={'md'}
+                                    leftIcon={<FaFacebook />}
+                                    onClick={() => login('facebook')}
+                                >
+                                    <Center>
+                                        <Text>Continue with Facebook</Text>
+                                    </Center>
+                                </Button>
+                                <Button
+                                    w={'full'}
+                                    backgroundColor={"#2F2F2F"}
+                                    color={"#FFFFFF"}
+                                    shadow={'md'}
+                                    leftIcon={<FaMicrosoft />}
+                                    onClick={() => login('azure')}
+                                >
+                                    <Center>
+                                        <Text>Sign in with Microsoft</Text>
+                                    </Center>
+                                </Button>
+                            </VStack>
+
+                        </Container>
+
+                    </VStack>
+                </Center>
+            </VStack>
+        </Container>
     );
 }

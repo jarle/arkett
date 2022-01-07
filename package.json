@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.3",
     "@ckeditor/ckeditor5-react": "^3.0.3",
     "@ckeditor/ckeditor5-theme-lark": "^31.1.0",

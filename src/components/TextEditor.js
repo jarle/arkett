@@ -24,7 +24,6 @@ export default function TextEditor() {
                 CustomEditor: require("ckeditor5-custom-build")
             };
             //console.log(editorRef.current.CustomEditor.builtinPlugins.map(p => p.pluginName))
-            console.log(editorRef.current)
         }
     }, []);
 
@@ -78,7 +77,8 @@ export default function TextEditor() {
                 marginRight={'10'}
                 width={'80vw'}
                 maxWidth={'60em'}
-                minHeight={'container.md'}
+                minHeight={'85vh'}
+                maxHeight={'85vh'}
                 overflow={'auto'}
                 shadow={'lg'}
             >
