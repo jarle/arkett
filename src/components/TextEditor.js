@@ -55,7 +55,7 @@ export default function TextEditor() {
                 }}
             /> : (
                 <Container>
-                    <Spinner/>
+                    <Spinner />
                 </Container>
             )
     )
@@ -64,7 +64,7 @@ export default function TextEditor() {
         return () => {
             editor.editor?.destroy()
         }
-    }, [])
+    }, [editor?.editor])
 
 
     return (
