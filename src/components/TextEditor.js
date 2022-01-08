@@ -1,12 +1,13 @@
+import { Center, Container, HStack, Spinner, Text } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { EditorContentContext } from '../state/EditorContentProvider';
 import { supabase } from '../utils/supabaseClient';
-import { Center, Container, Spinner } from '@chakra-ui/react'
+import { SYNCHRONIZED, SYNCHRONIZING, NOT_SYNCED } from '../utils/syncStates';
 import('@ckeditor/ckeditor5-theme-lark/theme/theme.css')
 
 export default function TextEditor() {
-    const { content, setContent } = useContext(EditorContentContext)
+    const { content, setContent, setSyncState } = useContext(EditorContentContext)
     const { user } = useContext(AuthContext)
     const userRef = useRef()
 
@@ -31,12 +32,14 @@ export default function TextEditor() {
     const handleSave = async editor => {
         if (userRef.current) {
             console.log("Synchronizing to cloud...")
+            setSyncState(SYNCHRONIZING)
             await supabase
                 .from("content")
                 .update({ "content": editor.getData() })
                 .match({ owner: userRef.current.id });
 
             console.log("Synchronized");
+            setSyncState(SYNCHRONIZED)
         }
     }
 
@@ -51,12 +54,16 @@ export default function TextEditor() {
                     }
                 }}
                 onChange={(event, editor) => {
+                    setSyncState(NOT_SYNCED)
                     setContent(editor.getData())
                 }}
             /> : (
-                <Container>
-                    <Spinner />
-                </Container>
+                <Center padding={'30'}>
+                    <HStack>
+                        <Spinner label={"Loading editor"} />
+                        <Text>Loading editor</Text>
+                    </HStack>
+                </Center>
             )
     )
 

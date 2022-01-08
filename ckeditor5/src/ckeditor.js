@@ -74,12 +74,12 @@ Editor.defaultConfig = {
 			'outdent',
 			'indent',
 			'|',
-			'imageUpload',
+			//'imageUpload',
 			'blockQuote',
 			'insertTable',
-			'mediaEmbed',
-			'undo',
-			'redo'
+			// 'mediaEmbed',
+			// 'undo',
+			// 'redo'
 		]
 	},
 	language: 'en',

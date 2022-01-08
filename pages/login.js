@@ -1,10 +1,10 @@
-import { Button, Center, Container, Heading, List, ListIcon, ListItem, Text, UnorderedList, VStack } from '@chakra-ui/react';
-import { FaApple, FaCloud, FaFacebook, FaMicrosoft } from 'react-icons/fa';
+import { CheckIcon } from '@chakra-ui/icons';
+import { Button, Center, Container, Fade, Heading, List, ListIcon, ListItem, Text, VStack } from '@chakra-ui/react';
+import { FaFacebook, FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import Logo from '../src/components/Logo';
 import { supabase } from '../src/utils/supabaseClient';
 
-import Logo from '../src/components/Logo'
-import { CheckIcon } from '@chakra-ui/icons';
 
 
 export default function All() {
@@ -12,7 +12,7 @@ export default function All() {
     const login = (provider) => {
         supabase.auth.signIn({
             provider: provider,
-            redirectTo: URL
+            redirectTo: URL,
         })
     }
 
@@ -31,18 +31,21 @@ export default function All() {
                         >
                             <Heading size={'md'} marginBottom={'3'} > Sign in to arkett to: </Heading>
                             <List spacing={'2'}>
-                                <ListItem>
-                                    <ListIcon as={CheckIcon} color='green.500' />
-                                    Back up existing notes
-                                </ListItem>
-                                <ListItem>
-                                    <ListIcon as={CheckIcon} color='green.500' />
-                                    Synchronize notes between devices
-                                </ListItem>
-                                <ListItem>
-                                    <ListIcon as={CheckIcon} color='green.500' />
-                                    Publish arketts
-                                </ListItem>
+                                {
+                                    [
+                                        "Back up existing notes",
+                                        "Synchronize notes between devides",
+                                        "Publish arketts"
+                                    ]
+                                        .map(
+                                            description => (
+                                                <ListItem key={description}>
+                                                    <ListIcon as={CheckIcon} color='green.500' />
+                                                    {description}
+                                                </ListItem>
+                                            )
+                                        )
+                                }
                                 <ListItem>
                                     ...and much more!
                                 </ListItem>

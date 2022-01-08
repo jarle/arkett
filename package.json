@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "prebuild": "cd ckeditor5 && npm install && npm run build",
+    "prebuild": "cd ckeditor5 && npm run build",
     "build": "next build",
     "buildd": "next build",
     "test": "next test"
