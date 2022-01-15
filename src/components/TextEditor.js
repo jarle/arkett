@@ -14,6 +14,19 @@ export default function TextEditor() {
     const userRef = useRef()
     const editorRef = useRef()
 
+    const saveHotkeyHandler = (event) => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault()
+            scheduleAutosave()
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keydown', saveHotkeyHandler)
+
+        return () => window.removeEventListener('keydown', saveHotkeyHandler)
+    }, [])
+
     useEffect(() => {
         userRef.current = user
     }, [user])
