@@ -1,5 +1,5 @@
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { IconButton, Menu, MenuButton, MenuItem, MenuList, useToast } from '@chakra-ui/react';
+import { IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useToast } from '@chakra-ui/react';
 import { React, useContext } from 'react';
 import { FiLogOut } from 'react-icons/fi';
 import { AuthContext } from '../state/AuthProvider';
@@ -46,9 +46,9 @@ export default function AccountMenu() {
                 as={IconButton}
                 icon={<HamburgerIcon />}
             />
-            <MenuList>
+            <MenuList padding={"2"}>
                 <MenuItem icon={<FiLogOut />} onClick={logout}>
-                    Log out {user.email}
+                    <Text> Log out {user.email} </Text>
                 </MenuItem>
             </MenuList>
         </Menu>

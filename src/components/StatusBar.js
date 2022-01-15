@@ -27,7 +27,7 @@ export default function StatusBar() {
         if (session) {
             return syncState.description
         }
-        return "Content not backed up to the cloud. Log in to avoid losing changes."
+        return "Not logged in. Content is not synchronized to the cloud."
     }
 
     return (
