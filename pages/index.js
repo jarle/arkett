@@ -4,7 +4,6 @@ import { React } from 'react';
 import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
 import AccountMenu from '../src/components/Menu';
-import StatusBar from '../src/components/StatusBar';
 import TextEditor from '../src/components/TextEditor';
 
 const MainAppBody = () => (
@@ -19,7 +18,6 @@ const MainAppBody = () => (
       </Center>
 
       <TextEditor />
-      <StatusBar />
       <LoginButton />
     </VStack>
   </Box>
@@ -33,13 +31,13 @@ const App = () => {
   );
 }
 
-export default function Home({error}) {
+export default function Home({ error }) {
   return (
     <div>
       <Head>
         <title>arkett</title>
         <meta name="description" content="arkett - the minimalist note editor" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <main>

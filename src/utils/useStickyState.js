@@ -16,17 +16,15 @@ export default function useStickyState(defaultValue, key) {
     });
 
     const handleChangeInStorage = event => {
-        if (event.key === 'content' && (event.newValue !== previousValue.current)) {
-            console.log(event)
-            console.log(event.newValue)
-            setValue(JSON.parse(event.newValue))
+        if (event.key === 'content') {
+            console.debug("Storage changed, noop")
+            // setRemoteValue(JSON.parse(event.newValue))
         }
     }
 
     const handleRemoteChange = event => {
         if (event.new.content !== previousValue.current) {
-            console.log("Setting new value from remote")
-            //setValue(event.new.content)
+            // setRemoteValue(event.new.content)
         }
     }
 
@@ -45,14 +43,10 @@ export default function useStickyState(defaultValue, key) {
     }, [])
 
     useEffect(() => {
+        console.debug("Local change, save to localstorage")
         const newValue = JSON.stringify(value)
-        const currentSaved = window?.localStorage.getItem(key)
-        if (newValue !== currentSaved) {
-            console.log("Save to local storage")
-            window?.localStorage.setItem(key, newValue);
-        }
+        window.localStorage.setItem(key, newValue);
         previousValue.current = newValue
-
     }, [key, value]);
 
     return [value, setValue];
