@@ -25,7 +25,8 @@ function cloudReducer(state, action) {
         case actions.REJECT_SYNC:
             return {
                 ...state,
-                shouldSync: false
+                shouldSync: false,
+                syncState: SYNCHRONIZED
             }
         case actions.SYNCHRONIZE:
             return {
@@ -60,7 +61,7 @@ const initialState = {
 
 export default function CloudSyncProvider({ children }) {
     const { session, user } = useContext(AuthContext)
-    const { content, setContent } = useContext(EditorContentContext)
+    const { content, setContent,  setDefaultContent } = useContext(EditorContentContext)
 
     const [cloudState, cloudDispatch] = useReducer(cloudReducer, initialState)
     const autosaverTimeout = useRef()
@@ -84,6 +85,10 @@ export default function CloudSyncProvider({ children }) {
 
             await setContent(data[0].content)
             cloudDispatch(actions.SYNC_SUCCESS)
+        }
+        else {
+            console.warn("No user")
+            setDefaultContent()
         }
     }
     useEffect(fetchFromRemote, [user, user?.id, setContent])

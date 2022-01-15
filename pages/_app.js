@@ -7,14 +7,18 @@ import EditorContentProvider from '../src/state/EditorContentProvider';
 import { theme } from '../styles/theme';
 import 'react-quill/dist/quill.bubble.css';
 import '../styles/quillstyling.css'
+import CloudSyncProvider from '../src/state/CloudSyncProvider';
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
         <EditorContentProvider>
-          <Component {...pageProps} />
+          <CloudSyncProvider>
+            <Component {...pageProps} />
+          </CloudSyncProvider>
         </EditorContentProvider>
+
       </AuthProvider>
     </ChakraProvider>
   )

@@ -22,7 +22,7 @@ export default function AccountMenu() {
             for (let i = 0; i <= contentList.length; i++) {
                 const newContent = contentList.slice(0, contentList.length - i).join('</')
                 setContent(newContent)
-                const timeToWait = ((i + 1) * (100 / contentList.length))
+                const timeToWait = ((10 / contentList.length))
                 await (timeout(timeToWait))
             }
         } catch (error) {

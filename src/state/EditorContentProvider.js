@@ -1,16 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../utils/supabaseClient";
-import useStickyState from "../utils/useStickyState";
-import { AuthContext } from "./AuthProvider";
-import { defaultContent } from "../utils/defaultContent"
-import { NOT_SYNCED, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates";
+import { createContext, useState } from "react";
+import { defaultContent } from "../utils/defaultContent";
 
 export const EditorContentContext = createContext()
 
 export default function EditorContentProvider({ children }) {
-    const [content, setContent] = useStickyState(defaultContent, 'content')
+    //const [content, setContent] = useStickyState(defaultContent, 'content')
+    const [content, setContent] = useState('')
 
     const setDefaultContent = () => {
+        console.log("Set default")
         setContent(defaultContent)
     }
 

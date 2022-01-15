@@ -4,9 +4,7 @@ import { React } from 'react';
 import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
 import AccountMenu from '../src/components/Menu';
-import StatusBar from '../src/components/StatusBar';
 import TextEditor from '../src/components/TextEditor';
-import CloudSyncProvider from '../src/state/CloudSyncProvider'
 
 const MainAppBody = () => (
   <Box height={'100vh'} width={'100vw'} >
@@ -19,10 +17,7 @@ const MainAppBody = () => (
         <Logo />
       </Center>
 
-      <CloudSyncProvider>
-        <TextEditor />
-        <StatusBar />
-      </CloudSyncProvider>
+      <TextEditor />
       <LoginButton />
     </VStack>
   </Box>
@@ -42,7 +37,7 @@ export default function Home({ error }) {
       <Head>
         <title>arkett</title>
         <meta name="description" content="arkett - the minimalist note editor" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <main>
