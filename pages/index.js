@@ -6,6 +6,7 @@ import Logo from '../src/components/Logo';
 import AccountMenu from '../src/components/Menu';
 import StatusBar from '../src/components/StatusBar';
 import TextEditor from '../src/components/TextEditor';
+import CloudSyncProvider from '../src/state/CloudSyncProvider'
 
 const MainAppBody = () => (
   <Box height={'100vh'} width={'100vw'} >
@@ -18,8 +19,10 @@ const MainAppBody = () => (
         <Logo />
       </Center>
 
-      <TextEditor />
-      <StatusBar />
+      <CloudSyncProvider>
+        <TextEditor />
+        <StatusBar />
+      </CloudSyncProvider>
       <LoginButton />
     </VStack>
   </Box>
@@ -33,7 +36,7 @@ const App = () => {
   );
 }
 
-export default function Home({error}) {
+export default function Home({ error }) {
   return (
     <div>
       <Head>

@@ -1,12 +1,12 @@
 import { HStack, Text } from "@chakra-ui/react"
 import { useContext } from "react"
 import { AuthContext } from "../state/AuthProvider"
-import { EditorContentContext } from "../state/EditorContentProvider"
+import { CloudContext } from "../state/CloudSyncProvider"
 
 
 export default function StatusBar() {
-    const { syncState } = useContext(EditorContentContext)
-    const {session} =useContext(AuthContext)
+    const { syncState, lastSync } = useContext(CloudContext)
+    const { session } = useContext(AuthContext)
 
     if (session) {
         return (
@@ -16,6 +16,7 @@ export default function StatusBar() {
                     color={'blackAlpha.500'}
                 >
                     {syncState.description}
+                    {lastSync && ` (last sync ${lastSync})`}
                 </Text>
             </HStack>
         )
