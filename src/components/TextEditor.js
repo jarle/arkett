@@ -14,6 +14,19 @@ export default function TextEditor() {
     const userRef = useRef()
     const editorRef = useRef()
 
+    const saveHotkeyHandler = (event) => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault()
+            scheduleAutosave()
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keydown', saveHotkeyHandler)
+
+        return () => window.removeEventListener('keydown', saveHotkeyHandler)
+    }, [])
+
     useEffect(() => {
         userRef.current = user
     }, [user])
@@ -44,7 +57,8 @@ export default function TextEditor() {
                 rounded={'18px'}
                 opacity={'80%'}
                 background={'white'}
-                width={'80vw'}
+                width={['97vw', '80vw']}
+                minWidth={'20em'}
                 maxWidth={'60em'}
                 maxHeight={'85vh'}
                 overflow='auto'

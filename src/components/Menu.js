@@ -9,25 +9,11 @@ import { supabase } from '../utils/supabaseClient';
 
 export default function AccountMenu() {
     const { user } = useContext(AuthContext)
-    const { content, setContent, setDefaultContent } = useContext(EditorContentContext)
+    const { setDefaultContent } = useContext(EditorContentContext)
     const toast = useToast()
-
-    const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const logout = async () => {
         supabase.auth.signOut()
-
-        try {
-            const contentList = content.split('</')
-            for (let i = 0; i <= contentList.length; i++) {
-                const newContent = contentList.slice(0, contentList.length - i).join('</')
-                setContent(newContent)
-                const timeToWait = ((10 / contentList.length))
-                await (timeout(timeToWait))
-            }
-        } catch (error) {
-            console.warn(error)
-        }
 
         setDefaultContent()
 

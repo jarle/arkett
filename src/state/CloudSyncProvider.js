@@ -86,7 +86,7 @@ export default function CloudSyncProvider({ children }) {
             await setContent(data[0].content)
             cloudDispatch(actions.SYNC_SUCCESS)
         }
-        else {
+        else if (window.localStorage.getItem('supabase.auth.token') === null){
             console.warn("No user")
             setDefaultContent()
         }
