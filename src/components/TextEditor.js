@@ -1,4 +1,4 @@
-import { Center, Container, HStack, Spinner, Text } from '@chakra-ui/react';
+import { Center, Container, HStack, Spinner, Text, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { CloudContext } from '../state/CloudSyncProvider';
@@ -13,11 +13,20 @@ export default function TextEditor() {
 
     const userRef = useRef()
     const editorRef = useRef()
+    const toast = useToast()
 
     const saveHotkeyHandler = (event) => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault()
-            scheduleAutosave()
+            if(user) {
+                scheduleAutosave()
+            }
+            else {
+                toast({
+                    description: "Please sign in to save your notes.",
+                    isClosable: true
+                })
+            }
         }
     }
 

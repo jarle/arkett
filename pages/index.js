@@ -1,6 +1,7 @@
 import { Box, Center, VStack } from '@chakra-ui/react';
 import Head from 'next/head';
 import { React } from 'react';
+import FeedbackButton from '../src/components/FeedbackButton';
 import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
 import AccountMenu from '../src/components/Menu';
@@ -19,6 +20,9 @@ const MainAppBody = () => (
 
       <TextEditor />
       <LoginButton />
+      <Box position={'fixed'} bottom={'0'} right={'10'} width='auto'>
+        <FeedbackButton />
+      </Box>
     </VStack>
   </Box>
 )
