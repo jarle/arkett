@@ -5,12 +5,14 @@ import { FcFeedback } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 import { AuthContext } from '../state/AuthProvider';
 import { EditorContentContext } from '../state/EditorContentProvider';
+import { FeedbackContext } from '../state/FeedbackProvider';
 import { supabase } from '../utils/supabaseClient';
 
 
 export default function AccountMenu() {
     const { user } = useContext(AuthContext)
     const { setDefaultContent } = useContext(EditorContentContext)
+    const { setShowFeedbackDialog, setDisableFeedback } = useContext(FeedbackContext)
     const toast = useToast()
 
     const logout = async () => {
@@ -27,9 +29,8 @@ export default function AccountMenu() {
     }
 
     const sendFeedback = () => {
-        toast({
-            description: "not supported yet"
-        })
+        setDisableFeedback(false)
+        setShowFeedbackDialog(true)
     }
 
     return user ? (

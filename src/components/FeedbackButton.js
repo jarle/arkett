@@ -2,6 +2,7 @@ import { Box, Button, Container, HStack, Popover, PopoverArrow, PopoverBody, Pop
 import { useContext, useRef, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdOutlineClose, MdOutlineFeedback } from 'react-icons/md'
 import { AuthContext } from '../state/AuthProvider'
+import { FeedbackContext } from '../state/FeedbackProvider'
 import { supabase } from '../utils/supabaseClient'
 
 function RadioCard(props) {
@@ -39,8 +40,8 @@ function RadioCard(props) {
 export default function FeedbackButton() {
     const { user } = useContext(AuthContext)
     const options = ['suggestion', 'bug', 'other']
-    const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
-    const [disableFeedback, setDisableFeedback] = useState(false)
+    const { disableFeedback, setDisableFeedback, showFeedbackDialog, setShowFeedbackDialog } = useContext(FeedbackContext)
+
     const [feedbackMessage, setFeedbackMessage] = useState("")
     const [feedbackType, setFeedbackType] = useState('suggestion')
     const open = () => setShowFeedbackDialog(true)
@@ -131,11 +132,12 @@ export default function FeedbackButton() {
                                     size={'3xs'}
                                     backgroundColor={'inherit'}
                                     rounded='lg'
-                                    as={MdOutlineClose}
                                     onClick={() => {
                                         close()
                                         setDisableFeedback(true)
-                                    }} />
+                                    }}>
+                                    <MdOutlineClose />
+                                </Button>
                             </span>
                         </Tooltip>
                     </HStack>

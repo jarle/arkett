@@ -6,6 +6,7 @@ import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
 import AccountMenu from '../src/components/Menu';
 import TextEditor from '../src/components/TextEditor';
+import FeedbackProvider from '../src/state/FeedbackProvider';
 
 const MainAppBody = () => (
   <Box height={'100vh'} width={'100vw'} >
@@ -30,7 +31,9 @@ const MainAppBody = () => (
 const App = () => {
   return (
     <div className="App">
-      <MainAppBody />
+      <FeedbackProvider>
+        <MainAppBody />
+      </FeedbackProvider>
     </div>
   );
 }
