@@ -1,7 +1,8 @@
-import { Box, Button, Container, HStack, Icon, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Text, Textarea, Tooltip, useRadio, useRadioGroup, useToast, VStack } from '@chakra-ui/react'
+import { Box, Button, Container, HStack, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, Text, Textarea, Tooltip, useRadio, useRadioGroup, useToast, VStack } from '@chakra-ui/react'
 import { useContext, useRef, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdOutlineClose, MdOutlineFeedback } from 'react-icons/md'
 import { AuthContext } from '../state/AuthProvider'
+import { supabase } from '../utils/supabaseClient'
 
 function RadioCard(props) {
     const { getInputProps, getCheckboxProps } = useRadio(props)
@@ -40,11 +41,13 @@ export default function FeedbackButton() {
     const options = ['suggestion', 'bug', 'other']
     const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
     const [disableFeedback, setDisableFeedback] = useState(false)
+    const [feedbackMessage, setFeedbackMessage] = useState("")
+    const [feedbackType, setFeedbackType] = useState('suggestion')
     const open = () => setShowFeedbackDialog(true)
     const close = () => setShowFeedbackDialog(false)
     const toast = useToast()
 
-    const [feedbackType, setFeedbackType] = useState('suggestion')
+
     const { getRootProps, getRadioProps } = useRadioGroup({
         name: 'suggestion',
         defaultValue: 'suggestion',
@@ -55,13 +58,35 @@ export default function FeedbackButton() {
     const group = getRootProps()
     const messageRef = useRef()
 
-    const submitFeedback = () => {
-        console.log("Submit")
-        toast({
-            description: "Feedback submitted!",
-            status: "success",
-            position: "top-right"
-        })
+    const submitFeedback = async () => {
+        if (!feedbackMessage) {
+            close()
+            return
+        }
+        const { data, error } = await supabase
+            .from("user_feedback")
+            .insert({
+                submitter: user.id,
+                text: feedbackMessage,
+                type: feedbackType
+            });
+        if (error) {
+            console.error(error)
+            toast({
+                status: "error",
+                description: "Could not submit feedback, try again later"
+            })
+        }
+        else {
+            toast({
+                description: "Feedback submitted!",
+                status: "success",
+                position: "top-right"
+            })
+
+            setFeedbackMessage("")
+            setFeedbackType("suggestion")
+        }
 
         close()
     }
@@ -147,6 +172,8 @@ export default function FeedbackButton() {
                             <Textarea
                                 ref={messageRef}
                                 placeholder={'Message'}
+                                value={feedbackMessage}
+                                onChange={e => setFeedbackMessage(e.target.value)}
                                 variant={'filled'}
                                 maxH={'20em'}
                                 minH={'5em'}
