@@ -5,7 +5,7 @@ import AuthProvider from '../src/state/AuthProvider';
 import EditorContentProvider from '../src/state/EditorContentProvider';
 import { theme } from '../styles/theme';
 import 'react-quill/dist/quill.bubble.css';
-import '../styles/quillstyling.css'
+import '../styles/quillstyling.scss'
 import CloudSyncProvider from '../src/state/CloudSyncProvider';
 
 function MyApp({ Component, pageProps }) {
