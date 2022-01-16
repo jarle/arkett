@@ -8,11 +8,11 @@ import TextEditor from '../src/components/TextEditor';
 
 const MainAppBody = () => (
   <Box height={'100vh'} width={'100vw'} >
-    <Box padding={'2'} position={'absolute'} top={'0'} left={'0'}>
+    <Box paddingLeft={'3'} position={'absolute'} top={'0'} left={'0'}>
       <AccountMenu />
     </Box>
 
-    <VStack spacing={'5'} >
+    <VStack spacing={'5'} marginTop={'3'}>
       <Center>
         <Logo />
       </Center>
@@ -37,7 +37,7 @@ export default function Home({ error }) {
       <Head>
         <title>arkett</title>
         <meta name="description" content="arkett - the minimalist note editor" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/arkett_icon.png" />
       </Head>
 
       <main>

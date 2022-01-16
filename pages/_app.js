@@ -1,5 +1,4 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import '@fontsource/caveat';
 import '@fontsource/nunito';
 import React from 'react';
 import AuthProvider from '../src/state/AuthProvider';
