@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons';
-import { Button, Center, Container, Heading, HStack, List, ListIcon, ListItem, position, Text, useToast, VStack } from '@chakra-ui/react';
+import { Button, Center, Container, Heading, HStack, List, ListIcon, ListItem, Text, useToast, VStack } from '@chakra-ui/react';
 import { FaFacebook, FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Logo from '../src/components/Logo';
@@ -99,7 +99,6 @@ export default function All() {
                                     colorScheme={'facebook'}
                                     shadow={'md'}
                                     padding={'5'}
-                                    leftIcon={<FcGoogle />}
                                     leftIcon={<FaFacebook />}
                                     onClick={() => login('facebook')}
                                 >
@@ -113,7 +112,6 @@ export default function All() {
                                     color={"#FFFFFF"}
                                     shadow={'md'}
                                     padding={'5'}
-                                    leftIcon={<FcGoogle />}
                                     leftIcon={<FaMicrosoft />}
                                     onClick={() => login('azure')}
                                 >
