@@ -57,7 +57,8 @@ export default function TextEditor() {
                 rounded={'18px'}
                 opacity={'80%'}
                 background={'white'}
-                width={'80vw'}
+                width={['97vw', '80vw']}
+                minWidth={'20em'}
                 maxWidth={'60em'}
                 maxHeight={'85vh'}
                 overflow='auto'

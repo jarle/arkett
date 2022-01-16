@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons';
-import { Button, Center, Container, Fade, Heading, List, ListIcon, ListItem, Text, VStack } from '@chakra-ui/react';
+import { Button, Center, Container, Heading, HStack, List, ListIcon, ListItem, position, Text, useToast, VStack } from '@chakra-ui/react';
 import { FaFacebook, FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Logo from '../src/components/Logo';
@@ -8,16 +8,24 @@ import { supabase } from '../src/utils/supabaseClient';
 
 
 export default function All() {
-    const URL = process.env.NEXT_PUBLIC_VERCEL_URL;
-    const login = (provider) => {
-        supabase.auth.signIn({
+    const URL = process.env.NEXT_PUBLIC_VERCEL_URL || (() => { throw Error("URL need to be set for redirects") })();
+    const toast = useToast()
+
+    const login = async (provider) => {
+        await supabase.auth.signIn({
             provider: provider,
             redirectTo: URL,
+        })
+        toast({
+            description: "Successfully signed in, redirecting.",
+            status: "success",
+            position: "top-right",
+            isClosable: true
         })
     }
 
     return (
-        <Container height='100vh'>
+        <Center height='100vh' maxWidth='100vw'>
             <VStack spacing={'20'}>
                 <Logo />
                 <Center>
@@ -26,6 +34,7 @@ export default function All() {
                             rounded={'md'}
                             background={'white'}
                             shadow={'lg'}
+                            maxWidth={'90%'}
                             padding={'6'}
                             variant={'outline'}
                         >
@@ -34,27 +43,30 @@ export default function All() {
                                 {
                                     [
                                         "Back up existing notes",
-                                        "Synchronize notes between devides",
-                                        "Publish arketts"
+                                        "Synchronize notes between devices",
+                                        //"Archive arketts",
+                                        //"Publish arketts"
                                     ]
                                         .map(
                                             description => (
-                                                <ListItem key={description}>
-                                                    <ListIcon as={CheckIcon} color='green.500' />
-                                                    {description}
+                                                <ListItem key={description} >
+                                                    <HStack spacing='0'>
+                                                        <ListIcon as={CheckIcon} color='green.500' />
+                                                        <Text>{description}</Text>
+                                                    </HStack>
                                                 </ListItem>
                                             )
                                         )
                                 }
                                 <ListItem>
-                                    ...and much more!
+                                    ...and more features coming in the near future!
                                 </ListItem>
                             </List>
                         </Container>
                         <Container
                             padding={'4'}
                             rounded={'lg'}
-                            width={'md'}
+                            width={['90%', 'md']}
                         >
                             <VStack spacing={2} align={'center'} w={'full'}>
                                 <Button
@@ -62,6 +74,7 @@ export default function All() {
                                     background={'white'}
                                     variant={'outline'}
                                     shadow={'md'}
+                                    padding={'5'}
                                     leftIcon={<FcGoogle />}
                                     onClick={() => login('google')}
                                 >
@@ -85,6 +98,8 @@ export default function All() {
                                     w={'full'}
                                     colorScheme={'facebook'}
                                     shadow={'md'}
+                                    padding={'5'}
+                                    leftIcon={<FcGoogle />}
                                     leftIcon={<FaFacebook />}
                                     onClick={() => login('facebook')}
                                 >
@@ -97,6 +112,8 @@ export default function All() {
                                     backgroundColor={"#2F2F2F"}
                                     color={"#FFFFFF"}
                                     shadow={'md'}
+                                    padding={'5'}
+                                    leftIcon={<FcGoogle />}
                                     leftIcon={<FaMicrosoft />}
                                     onClick={() => login('azure')}
                                 >
@@ -111,6 +128,6 @@ export default function All() {
                     </VStack>
                 </Center>
             </VStack>
-        </Container>
+        </Center>
     );
 }
