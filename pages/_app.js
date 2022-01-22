@@ -1,12 +1,13 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import '@fontsource/nunito';
 import React from 'react';
-import AuthProvider from '../src/state/AuthProvider';
-import EditorContentProvider from '../src/state/EditorContentProvider';
-import { theme } from '../styles/theme';
 import 'react-quill/dist/quill.bubble.css';
-import '../styles/quillstyling.scss'
+import AuthProvider from '../src/state/AuthProvider';
 import CloudSyncProvider from '../src/state/CloudSyncProvider';
+import EditorContentProvider from '../src/state/EditorContentProvider';
+import '../styles/index.css';
+import '../styles/quillstyling.scss';
+import { theme } from '../styles/theme';
 
 function MyApp({ Component, pageProps }) {
   return (

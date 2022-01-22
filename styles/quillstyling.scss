@@ -1,18 +1,19 @@
 .ql-container {
-    font-family: nunito, Helvetica, Arial, sans-serif;
-    font-size: 15px;
+  font-family: nunito, Helvetica, Arial, sans-serif;
+  font-size: 15px;
 }
 
-.ql-editor ol, .ql-editor ul {
-    padding-left: 0em !important;
+.ql-editor ol,
+.ql-editor ul {
+  padding-left: 0em !important;
 }
 
 .ql-indent-1 {
-    padding-left: 3em !important;
+  padding-left: 3em !important;
 }
 
 @for $i from 2 through 8 {
-    .ql-indent-#{$i} {
-      padding-left: #{$i * 1.5}em !important;
-    }
+  .ql-indent-#{$i} {
+    padding-left: #{$i * 1.5}em !important;
+  }
 }

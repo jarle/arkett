@@ -9,7 +9,7 @@ import TextEditor from '../src/components/TextEditor';
 import FeedbackProvider from '../src/state/FeedbackProvider';
 
 const MainAppBody = () => (
-  <Box height={'100vh'} width={'100vw'} >
+  <Box>
     <Box paddingLeft={'3'} position={'absolute'} top={'0'} left={'0'}>
       <AccountMenu />
     </Box>
@@ -21,9 +21,7 @@ const MainAppBody = () => (
 
       <TextEditor />
       <LoginButton />
-      <Box position={'fixed'} bottom={'0'} right={'10'} width='auto'>
-        <FeedbackButton />
-      </Box>
+      <FeedbackButton />
     </VStack>
   </Box>
 )
@@ -44,6 +42,8 @@ export default function Home({ error }) {
       <Head>
         <title>arkett</title>
         <meta name="description" content="arkett - the minimalist note editor" />
+        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+        <meta name="mobile-web-app-capable" content="yes"></meta>
         <link rel="icon" href="/arkett_icon.png" />
       </Head>
 
