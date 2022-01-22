@@ -1,5 +1,5 @@
 import { CheckIcon } from '@chakra-ui/icons';
-import { Button, Center, Container, Heading, HStack, List, ListIcon, ListItem, Text, useToast, VStack } from '@chakra-ui/react';
+import { Button, Center, Container, Heading, HStack, List, ListIcon, ListItem, Text, VStack } from '@chakra-ui/react';
 import { FaFacebook, FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import Logo from '../src/components/Logo';
@@ -8,19 +8,20 @@ import { supabase } from '../src/utils/supabaseClient';
 
 
 export default function All() {
-    const URL = process.env.NEXT_PUBLIC_VERCEL_URL || (() => { throw Error("URL need to be set for redirects") })();
-    const toast = useToast()
+    const URL = (() => {
+        const url = process.env.NEXT_PUBLIC_VERCEL_URL;
+        if (!url.includes("arkett.vercel.app" && !url.includes("localhost"))) {
+            return "https://arkett-git-develop-jarle.vercel.app/"
+        }
+        return url
+    }
+    )();
 
     const login = async (provider) => {
+        console.debug(`Redirect to ${URL}`)
         await supabase.auth.signIn({
             provider: provider,
             redirectTo: URL,
-        })
-        toast({
-            description: "Successfully signed in, redirecting.",
-            status: "success",
-            position: "top-right",
-            isClosable: true
         })
     }
 

@@ -91,112 +91,117 @@ export default function FeedbackButton() {
 
         close()
     }
+    if (!user) {
+        return null
+    }
 
     return (
-        <Popover
-            returnFocusOnClose={false}
-            placement='top-end'
-            onClose={close}
-            closeOnBlur={true}
-            initialFocusRef={messageRef}
-            isOpen={showFeedbackDialog}
-        >
-            {!disableFeedback && <PopoverTrigger>
-                <Container
-                    opacity={'70%'}
-                    backgroundColor={'white'}
-                    height='2em'
-                    roundedTop='md'
-                    shadow='base'
-                    padding='0'
-                    _hover={{
-                        opacity: '100%'
-                    }}
-                >
-                    <HStack minHeight='100%' paddingX='3' spacing='2'>
-                        <Button
-                            backgroundColor='inherit'
-                            size='xs'
-                            rounded='lg'
-                            _hover={{
-                                background: 'blackAlpha.100'
-                            }}
-                            onClick={() => setShowFeedbackDialog(!showFeedbackDialog)}
-                            leftIcon={showFeedbackDialog ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
-                        >
-                            send feedback
-                        </Button>
-                        <Tooltip label={'hide this'}>
-                            <span>
-                                <Button
-                                    size={'3xs'}
-                                    backgroundColor={'inherit'}
-                                    rounded='lg'
-                                    onClick={() => {
-                                        close()
-                                        setDisableFeedback(true)
-                                    }}>
-                                    <MdOutlineClose />
-                                </Button>
-                            </span>
-                        </Tooltip>
-                    </HStack>
-                </Container>
-            </PopoverTrigger>
-            }
-            <Portal>
-                <PopoverContent shadow={'base'}>
-                    <PopoverArrow />
-                    <PopoverHeader>
-                        <HStack>
-                            <MdOutlineFeedback />
-                            <Text>Leave feedback</Text>
+        <Box position={'fixed'} bottom={'0'} right={'10'} width='auto'>
+            <Popover
+                returnFocusOnClose={false}
+                placement='top-end'
+                onClose={close}
+                closeOnBlur={true}
+                initialFocusRef={messageRef}
+                isOpen={showFeedbackDialog}
+            >
+                {!disableFeedback && <PopoverTrigger>
+                    <Container
+                        opacity={'70%'}
+                        backgroundColor={'white'}
+                        height='2em'
+                        roundedTop='md'
+                        shadow='base'
+                        padding='0'
+                        _hover={{
+                            opacity: '100%'
+                        }}
+                    >
+                        <HStack minHeight='100%' paddingX='3' spacing='2'>
+                            <Button
+                                backgroundColor='inherit'
+                                size='xs'
+                                rounded='lg'
+                                _hover={{
+                                    background: 'blackAlpha.100'
+                                }}
+                                onClick={() => setShowFeedbackDialog(!showFeedbackDialog)}
+                                leftIcon={showFeedbackDialog ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
+                            >
+                                send feedback
+                            </Button>
+                            <Tooltip label={'hide this'}>
+                                <span>
+                                    <Button
+                                        size={'3xs'}
+                                        backgroundColor={'inherit'}
+                                        rounded='lg'
+                                        onClick={() => {
+                                            close()
+                                            setDisableFeedback(true)
+                                        }}>
+                                        <MdOutlineClose />
+                                    </Button>
+                                </span>
+                            </Tooltip>
                         </HStack>
-                    </PopoverHeader>
-
-                    <PopoverCloseButton />
-
-                    <PopoverBody>
-                        <VStack spacing={5}>
-                            <Text>Thank you for helping improve arkett by providing feedback!</Text>
-                            <HStack {...group}>
-                                {
-                                    options.map((value) => {
-                                        const radio = getRadioProps({ value })
-                                        return (
-                                            <RadioCard key={value} {...radio}>
-                                                {value}
-                                            </RadioCard>
-                                        )
-                                    })
-                                }
+                    </Container>
+                </PopoverTrigger>
+                }
+                <Portal>
+                    <PopoverContent shadow={'base'}>
+                        <PopoverArrow />
+                        <PopoverHeader>
+                            <HStack>
+                                <MdOutlineFeedback />
+                                <Text>Leave feedback</Text>
                             </HStack>
-                            <Textarea
-                                ref={messageRef}
-                                placeholder={'Message'}
-                                value={feedbackMessage}
-                                onChange={e => setFeedbackMessage(e.target.value)}
-                                variant={'filled'}
-                                maxH={'20em'}
-                                minH={'5em'}
-                                overflow={'auto'}
-                                rows='5'
-                            />
-                        </VStack>
+                        </PopoverHeader>
 
-                    </PopoverBody>
+                        <PopoverCloseButton />
 
-                    <PopoverFooter display={'flex'} flexDir={'column'} alignItems={'center'}>
-                        <Button
-                            colorScheme='green'
-                            shadow='base'
-                            onClick={submitFeedback}
-                        >
-                            submit
-                        </Button>
-                    </PopoverFooter>
-                </PopoverContent>
-            </Portal>
-        </Popover>
+                        <PopoverBody>
+                            <VStack spacing={5}>
+                                <Text>Thank you for helping improve arkett by providing feedback!</Text>
+                                <HStack {...group}>
+                                    {
+                                        options.map((value) => {
+                                            const radio = getRadioProps({ value })
+                                            return (
+                                                <RadioCard key={value} {...radio}>
+                                                    {value}
+                                                </RadioCard>
+                                            )
+                                        })
+                                    }
+                                </HStack>
+                                <Textarea
+                                    ref={messageRef}
+                                    placeholder={'Message'}
+                                    value={feedbackMessage}
+                                    onChange={e => setFeedbackMessage(e.target.value)}
+                                    variant={'filled'}
+                                    maxH={'20em'}
+                                    minH={'5em'}
+                                    overflow={'auto'}
+                                    rows='5'
+                                />
+                            </VStack>
+
+                        </PopoverBody>
+
+                        <PopoverFooter display={'flex'} flexDir={'column'} alignItems={'center'}>
+                            <Button
+                                colorScheme='green'
+                                shadow='base'
+                                onClick={submitFeedback}
+                            >
+                                submit
+                            </Button>
+                        </PopoverFooter>
+                    </PopoverContent>
+                </Portal>
+            </Popover>
+        </Box>
     )
 }
