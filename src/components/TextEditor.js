@@ -18,7 +18,7 @@ export default function TextEditor() {
     const saveHotkeyHandler = (event) => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault()
-            if(user) {
+            if (user) {
                 scheduleAutosave()
             }
             else {
@@ -66,7 +66,7 @@ export default function TextEditor() {
                 rounded={'18px'}
                 opacity={'80%'}
                 background={'white'}
-                width={['97vw', '80vw']}
+                width={['97%', null, '80%']}
                 minWidth={'20em'}
                 maxWidth={'60em'}
                 maxHeight={'85vh'}
