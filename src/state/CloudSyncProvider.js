@@ -177,6 +177,7 @@ export default function CloudSyncProvider({ children }) {
             }
             else {
                 cloudDispatch(actions.REJECT_SYNC)
+                scheduleAutosave()
             }
         }
     }
