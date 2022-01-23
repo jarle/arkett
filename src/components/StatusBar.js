@@ -11,9 +11,12 @@ export default function StatusBar() {
     const { session } = useContext(AuthContext)
 
     const StatusIndicator = () => {
+        if (!session) {
+            return <Icon boxSize={'1.5em'} as={IoWarning} color={'orange'} />
+        }
         switch (syncState) {
             case NOT_SYNCED:
-                return <Icon boxSize={'1.5em'} as={IoWarning} color={session? 'gray' : 'orange'} />
+                return <Icon boxSize={'1.5em'} as={IoCheckmarkCircle} color={'gray'} />
             case SYNCHRONIZING:
                 return <Icon boxSize={'1.5em'} as={IoSyncCircle} color='blue.300' />
             case SYNCHRONIZED:

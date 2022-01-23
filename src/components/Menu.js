@@ -4,14 +4,14 @@ import { React, useContext } from 'react';
 import { FcFeedback } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 import { AuthContext } from '../state/AuthProvider';
-import { EditorContentContext } from '../state/EditorContentProvider';
+import { CloudContext } from '../state/CloudSyncProvider';
 import { FeedbackContext } from '../state/FeedbackProvider';
 import { supabase } from '../utils/supabaseClient';
 
 
 export default function AccountMenu() {
     const { user } = useContext(AuthContext)
-    const { setDefaultContent } = useContext(EditorContentContext)
+    const { setDefaultContent } = useContext(CloudContext)
     const { setShowFeedbackDialog, setDisableFeedback } = useContext(FeedbackContext)
     const toast = useToast()
 
