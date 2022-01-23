@@ -3,7 +3,7 @@ import { useContext } from "react"
 import { IoCheckmarkCircle, IoSyncCircle, IoWarning } from "react-icons/io5"
 import { AuthContext } from "../state/AuthProvider"
 import { CloudContext } from "../state/CloudSyncProvider"
-import { NOT_SYNCED, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates"
+import { NOT_SYNCED, STALE, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates"
 
 
 export default function StatusBar() {
@@ -21,8 +21,10 @@ export default function StatusBar() {
                 return <Icon boxSize={'1.5em'} as={IoSyncCircle} color='blue.300' />
             case SYNCHRONIZED:
                 return <Icon boxSize={'1.5em'} as={IoCheckmarkCircle} color='green.300' />
+            case STALE:
+                return <Icon boxSize={'1.5em'} as={IoWarning} color={'red'} />
             default:
-                break;
+                return null;
         }
     }
 

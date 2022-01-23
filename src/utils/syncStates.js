@@ -8,5 +8,5 @@ export const SYNCHRONIZED = {
     description: "Content has been saved to the cloud"
 }
 export const STALE = {
-    description: "Content has been changed somewhere else"
+    description: "Content has been changed somewhere else and will be overwritten on next refresh"
 }

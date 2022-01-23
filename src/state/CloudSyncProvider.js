@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 import { defaultContent } from "../utils/defaultContent";
 import { supabase } from "../utils/supabaseClient";
@@ -14,7 +15,8 @@ export const actions = {
     SYNCHRONIZE: "synchronize",
     SYNC_SUCCESS: "sync_success",
     CONTENT_CHANGED: "content_changed",
-    SYNC_FAILURE: 'sync_failure'
+    SYNC_FAILURE: 'sync_failure',
+    IS_STALE: "is_stale"
 }
 
 function cloudReducer(state, action) {
@@ -78,6 +80,7 @@ export default function CloudSyncProvider({ children }) {
     const { session, user } = useContext(AuthContext)
     const { content, setContent } = useContext(EditorContentContext)
     const [localContent, setLocalContent] = useStickyState(defaultContent, 'arkett_content')
+    const observedIds = useRef([])
 
     const [cloudState, cloudDispatch] = useReducer(cloudReducer, initialState)
     const autosaverTimeout = useRef()
@@ -93,6 +96,22 @@ export default function CloudSyncProvider({ children }) {
         setContent(localContent)
         scheduleAutosave()
     }, [])
+
+    useEffect(() => {
+        const mySubscription = supabase
+            .from('content')
+            .on('*', (event) => {
+                if (!observedIds.current.includes(event.new.nanoid)) {
+                    console.log(observedIds)
+                    console.log(event.new.nanoid)
+                    cloudDispatch(actions.IS_STALE)
+                }
+            })
+            .subscribe()
+
+        return () => mySubscription.unsubscribe()
+    }, [])
+
 
     const fetchFromRemote = async () => {
         if (user) {
@@ -112,7 +131,8 @@ export default function CloudSyncProvider({ children }) {
 
             const newContent = data[0]?.content
             if (newContent) {
-                setContent(data[0].content)
+                observedIds.current.push(data[0].nanoid)
+                setContent(newContent)
                 cloudDispatch(actions.SYNC_SUCCESS)
             }
             else {
@@ -143,14 +163,17 @@ export default function CloudSyncProvider({ children }) {
                 cloudDispatch(actions.SYNCHRONIZE)
                 setLocalContent(content)
                 if (user) {
-                    await supabase
+                    const nid = nanoid()
+                    observedIds.current.push(nid)
+                    const { error } = await supabase
                         .from("content")
-                        .update({ "content": content })
+                        .update({
+                            "content": content,
+                            "nanoid": nid
+                        })
                         .match({ owner: user.id });
                 }
-
                 cloudDispatch(actions.SYNC_SUCCESS)
-                console.debug("Saved")
             }
             else {
                 cloudDispatch(actions.REJECT_SYNC)
