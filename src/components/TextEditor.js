@@ -1,4 +1,4 @@
-import { Center, Container, HStack, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Center, Container, Fade, HStack, Spinner, Text, useToast, VStack } from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../state/AuthProvider';
 import { CloudContext } from '../state/CloudSyncProvider';
@@ -11,7 +11,6 @@ export default function TextEditor() {
     const { user } = useContext(AuthContext)
     const { scheduleAutosave } = useContext(CloudContext)
 
-    const userRef = useRef()
     const editorRef = useRef()
     const toast = useToast()
 
@@ -37,12 +36,10 @@ export default function TextEditor() {
     }, [])
 
     useEffect(() => {
-        userRef.current = user
-    }, [user])
-
-    useEffect(() => {
-        editorRef.current = require('./ConfiguredEditor').default
-    })
+        if (!editorRef.current) {
+            editorRef.current = require('./ConfiguredEditor').default
+        }
+    }, [])
 
     const handleChange = (content) => {
         setContent(content)
@@ -52,11 +49,24 @@ export default function TextEditor() {
     function loadingSpinner() {
         return (
             <Center padding={'30'}>
-                <HStack>
-                    <Spinner label={"Loading editor"} />
-                    <Text>Loading editor</Text>
-                </HStack>
+                <VStack>
+                    <HStack>
+                        <Spinner label={"Loading editor"} />
+                        <Text>Loading editor</Text>
+                    </HStack>
+                    <Fade in >
+                        <Text>Try refreshing the page if this takes too long</Text>
+                    </Fade>
+                </VStack>
             </Center>
+        )
+    }
+    function showEditor() {
+        return (
+            <editorRef.current
+                value={content}
+                onChange={handleChange}
+            />
         )
     }
 
@@ -66,7 +76,7 @@ export default function TextEditor() {
                 rounded={'18px'}
                 opacity={'80%'}
                 background={'white'}
-                width={['97%', null, '80%']}
+                width={['97vw', null, '80vw']}
                 minWidth={'20em'}
                 maxWidth={'60em'}
                 maxHeight={'85vh'}
@@ -75,14 +85,7 @@ export default function TextEditor() {
                 padding={'8'}
                 data-text-editor="arkett-editor"
             >
-                {
-                    editorRef.current ? (
-                        <editorRef.current
-                            value={content}
-                            onChange={handleChange}
-                        />
-                    ) : loadingSpinner()
-                }
+                {editorRef.current ? showEditor() : loadingSpinner()}
                 <StatusBar />
             </Container>
 

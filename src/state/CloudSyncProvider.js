@@ -1,6 +1,9 @@
+import { nanoid } from "nanoid";
 import { createContext, useContext, useEffect, useReducer, useRef } from "react";
+import { defaultContent } from "../utils/defaultContent";
 import { supabase } from "../utils/supabaseClient";
-import { NOT_SYNCED, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates";
+import { NOT_SYNCED, STALE, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates";
+import useStickyState from "../utils/useStickyState";
 import { AuthContext } from "./AuthProvider";
 import { EditorContentContext } from "./EditorContentProvider";
 
@@ -11,7 +14,9 @@ export const actions = {
     REJECT_SYNC: "reject_sync",
     SYNCHRONIZE: "synchronize",
     SYNC_SUCCESS: "sync_success",
-    CONTENT_CHANGED: "content_changed"
+    CONTENT_CHANGED: "content_changed",
+    SYNC_FAILURE: 'sync_failure',
+    IS_STALE: "is_stale"
 }
 
 function cloudReducer(state, action) {
@@ -47,6 +52,18 @@ function cloudReducer(state, action) {
                 syncState: NOT_SYNCED,
                 shouldSync: false
             }
+        case actions.SYNC_FAILURE:
+            return {
+                ...state,
+                syncState: NOT_SYNCED,
+                shouldSync: false
+            }
+        case actions.IS_STALE:
+            return {
+                ...state,
+                syncState: STALE,
+                shouldSync: false
+            }
         default:
             throw Error(`Unknown action ${action}, should be one of ${JSON.stringify(Object.values(actions))}`)
     }
@@ -61,7 +78,9 @@ const initialState = {
 
 export default function CloudSyncProvider({ children }) {
     const { session, user } = useContext(AuthContext)
-    const { content, setContent,  setDefaultContent } = useContext(EditorContentContext)
+    const { content, setContent } = useContext(EditorContentContext)
+    const [localContent, setLocalContent] = useStickyState(defaultContent, 'arkett_content')
+    const observedIds = useRef([])
 
     const [cloudState, cloudDispatch] = useReducer(cloudReducer, initialState)
     const autosaverTimeout = useRef()
@@ -73,46 +92,99 @@ export default function CloudSyncProvider({ children }) {
         shouldSync
     } = cloudState;
 
+    useEffect(() => {
+        setContent(localContent)
+        scheduleAutosave()
+    }, [])
+
+    useEffect(() => {
+        const mySubscription = supabase
+            .from('content')
+            .on('*', (event) => {
+                if (!observedIds.current.includes(event.new.nanoid)) {
+                    console.log(observedIds)
+                    console.log(event.new.nanoid)
+                    cloudDispatch(actions.IS_STALE)
+                }
+            })
+            .subscribe()
+
+        return () => mySubscription.unsubscribe()
+    }, [])
+
+
     const fetchFromRemote = async () => {
         if (user) {
             console.debug("Fetch latest from remote for " + user.email)
             cloudDispatch(actions.SYNCHRONIZE)
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from("content")
                 .select()
                 .eq('owner', user.id)
                 .limit(1)
 
-            await setContent(data[0].content)
-            cloudDispatch(actions.SYNC_SUCCESS)
+            if (error) {
+                cloudDispatch(actions.SYNC_FAILURE)
+                console.error(error)
+                return
+            }
+
+            const newContent = data[0]?.content
+            if (newContent) {
+                observedIds.current.push(data[0].nanoid)
+                setContent(newContent)
+                cloudDispatch(actions.SYNC_SUCCESS)
+            }
+            else {
+                console.debug("First login")
+                if (localContent?.length) {
+                    setContent(localContent)
+                    scheduleAutosave()
+                    await supabase
+                        .from("content")
+                        .insert({
+                            owner: user.id,
+                            content: localContent
+                        });
+                }
+            }
         }
-        else if (window.localStorage.getItem('supabase.auth.token') === null){
-            console.warn("No user")
-            setDefaultContent()
+        else if (localContent?.length) {
+            setContent(localContent)
         }
     }
-    useEffect(fetchFromRemote, [user, user?.id, setContent])
+
+    useEffect(fetchFromRemote, [user, setContent])
 
     const handleAutoSave = async () => {
-        if (shouldSync && user) {
+        if (shouldSync) {
             if (longTimeSinceLastSync()) {
                 console.debug("Autosaving")
                 cloudDispatch(actions.SYNCHRONIZE)
-                await supabase
-                    .from("content")
-                    .update({ "content": content })
-                    .match({ owner: user.id });
-
+                setLocalContent(content)
+                if (user) {
+                    const nid = nanoid()
+                    observedIds.current.push(nid)
+                    const { error } = await supabase
+                        .from("content")
+                        .update({
+                            "content": content,
+                            "nanoid": nid
+                        })
+                        .match({ owner: user.id });
+                }
                 cloudDispatch(actions.SYNC_SUCCESS)
-                console.debug("Saved")
-            } else {
+            }
+            else {
                 cloudDispatch(actions.REJECT_SYNC)
+                scheduleAutosave()
             }
         }
     }
+
     useEffect(handleAutoSave, [cloudState])
 
-    const longTimeSinceLastSync = () => (new Date().getTime() - lastSync) > 2000
+    const longTimeSinceLastSync = () => !lastSync || (new Date().getTime() - lastSync) > 2000
 
     const scheduleAutosave = () => {
         cloudDispatch(actions.CONTENT_CHANGED)
@@ -124,12 +196,16 @@ export default function CloudSyncProvider({ children }) {
         }, 750)
     }
 
+    const setDefaultContent = () => {
+        setLocalContent(defaultContent)
+    }
 
     const exported = {
         syncState,
         lastSync,
         cloudDispatch,
-        scheduleAutosave
+        scheduleAutosave,
+        setDefaultContent
     }
 
     return (
