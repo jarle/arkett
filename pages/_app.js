@@ -1,5 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import '@fontsource/nunito';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import 'react-quill/dist/quill.bubble.css';
@@ -27,16 +28,25 @@ function MyApp({ Component, pageProps }) {
 
 
   return (
-    <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <EditorContentProvider>
-          <CloudSyncProvider>
-            <Component {...pageProps} />
-          </CloudSyncProvider>
-        </EditorContentProvider>
+    <>
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+      </Head>
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <EditorContentProvider>
+            <CloudSyncProvider>
+              <Component {...pageProps} />
+            </CloudSyncProvider>
+          </EditorContentProvider>
 
-      </AuthProvider>
-    </ChakraProvider>
+        </AuthProvider>
+      </ChakraProvider>
+    </>
   )
 }
 

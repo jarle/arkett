@@ -1,5 +1,13 @@
-module.exports = {
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
+const withPWA = require('next-pwa')
+const runtimeCaching = require('next-pwa/cache')
+
+const config = {
   reactStrictMode: true,
+  pwa: {
+    dest: 'public',
+    runtimeCaching,
+  },
   async redirects() {
     return [
       {
@@ -15,5 +23,13 @@ module.exports = {
       }
     ]
   }
+}
 
+module.exports = phase => {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    return config
+  }
+  else {
+    return withPWA(config)
+  }
 }
