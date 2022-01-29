@@ -35,6 +35,7 @@ function MyApp({ Component, pageProps }) {
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
+        <link rel="apple-touch-icon" href="/arkett_icon_square.png"></link>
       </Head>
       <ChakraProvider theme={theme}>
         <AuthProvider>
