@@ -14,7 +14,7 @@ export default function TextEditor() {
     const editorRef = useRef()
     const toast = useToast()
 
-    const saveHotkeyHandler = (event) => {
+    const saveHotkeyHandler = (event: KeyboardEvent) => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault()
             if (user) {

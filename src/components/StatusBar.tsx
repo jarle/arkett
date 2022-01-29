@@ -3,8 +3,7 @@ import { useContext } from "react"
 import { IoCheckmarkCircle, IoSyncCircle, IoWarning } from "react-icons/io5"
 import { AuthContext } from "../state/AuthProvider"
 import { CloudContext } from "../state/CloudSyncProvider"
-import { NOT_SYNCED, STALE, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates"
-
+import { SYNC_STATE } from "../utils/syncStates"
 
 export default function StatusBar() {
     const { syncState, lastSync } = useContext(CloudContext)
@@ -15,13 +14,13 @@ export default function StatusBar() {
             return <Icon boxSize={'1.5em'} as={IoWarning} color={'orange'} />
         }
         switch (syncState) {
-            case NOT_SYNCED:
+            case SYNC_STATE.NOT_SYNCED:
                 return <Icon boxSize={'1.5em'} as={IoCheckmarkCircle} color={'gray'} />
-            case SYNCHRONIZING:
+            case SYNC_STATE.SYNCHRONIZING:
                 return <Icon boxSize={'1.5em'} as={IoSyncCircle} color='blue.300' />
-            case SYNCHRONIZED:
+            case SYNC_STATE.SYNCHRONIZED:
                 return <Icon boxSize={'1.5em'} as={IoCheckmarkCircle} color='green.300' />
-            case STALE:
+            case SYNC_STATE.STALE:
                 return <Icon boxSize={'1.5em'} as={IoWarning} color={'red'} />
             default:
                 return null;
@@ -30,7 +29,7 @@ export default function StatusBar() {
 
     const statusTooltip = () => {
         if (session) {
-            return syncState.description
+            return syncState
         }
         return "Not logged in. Content is not synchronized to the cloud."
     }

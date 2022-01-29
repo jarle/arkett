@@ -184,7 +184,7 @@ export default function FeedbackButton() {
                                     maxH={'20em'}
                                     minH={'5em'}
                                     overflow={'auto'}
-                                    rows='5'
+                                    rows={5}
                                 />
                             </VStack>
 

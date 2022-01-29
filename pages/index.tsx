@@ -1,6 +1,6 @@
 import { Box, Center, VStack } from '@chakra-ui/react';
 import Head from 'next/head';
-import { React } from 'react';
+import React from 'react';
 import FeedbackButton from '../src/components/FeedbackButton';
 import LoginButton from '../src/components/LoginButton';
 import Logo from '../src/components/Logo';
