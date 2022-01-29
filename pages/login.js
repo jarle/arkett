@@ -22,7 +22,9 @@ export default function All() {
 
     useEffect(() => {
         if (user) {
-            router.push("/")
+            router.push("/", null, {
+                shallow: true
+            })
         }
     }, [user])
 
