@@ -1,5 +1,4 @@
 import { Box, Center, VStack } from '@chakra-ui/react';
-import Head from 'next/head';
 import React from 'react';
 import FeedbackButton from '../src/components/FeedbackButton';
 import LoginButton from '../src/components/LoginButton';
@@ -26,7 +25,7 @@ const MainAppBody = () => (
   </Box>
 )
 
-const App = () => {
+export default function Home({ error }) {
   return (
     <div className="App">
       <FeedbackProvider>
@@ -34,23 +33,4 @@ const App = () => {
       </FeedbackProvider>
     </div>
   );
-}
-
-export default function Home({ error }) {
-  return (
-    <div>
-      <Head>
-        <title>arkett</title>
-        <meta name="description" content="arkett - the minimalist note editor" />
-        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
-        <meta name="mobile-web-app-capable" content="yes"></meta>
-        <link rel="icon" href="/arkett_icon.png" />
-      </Head>
-
-      <main>
-        <App />
-      </main>
-    </div>
-
-  )
 }
