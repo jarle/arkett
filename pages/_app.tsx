@@ -30,12 +30,18 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
+        <title>arkett</title>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/arkett_icon_square.png"></link>
+
         <meta
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
-        <link rel="apple-touch-icon" href="/arkett_icon_square.png"></link>
+        <meta name="description" content="arkett - the minimalist note editor" />
+        <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+        <meta name="mobile-web-app-capable" content="yes"></meta>
       </Head>
       <ChakraProvider theme={theme}>
         <AuthProvider>
