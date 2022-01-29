@@ -1,13 +1,21 @@
 import { nanoid } from "nanoid";
-import { createContext, useContext, useEffect, useReducer, useRef } from "react";
+import { createContext, Dispatch, useContext, useEffect, useReducer, useRef } from "react";
 import { defaultContent } from "../utils/defaultContent";
 import { supabase } from "../utils/supabaseClient";
-import { NOT_SYNCED, STALE, SYNCHRONIZED, SYNCHRONIZING } from "../utils/syncStates";
+import { SYNC_STATE } from "../utils/syncStates";
 import useStickyState from "../utils/useStickyState";
 import { AuthContext } from "./AuthProvider";
 import { EditorContentContext } from "./EditorContentProvider";
 
-export const CloudContext = createContext()
+export const CloudContext = createContext<CloudContextInterface>(null)
+
+export interface CloudContextInterface {
+    syncState: string,
+    lastSync: Date,
+    cloudDispatch: Dispatch<any>,
+    scheduleAutosave(): void,
+    setDefaultContent(): void
+}
 
 export const actions = {
     TRIGGER_SYNC: "trigger_sync",
@@ -31,37 +39,37 @@ function cloudReducer(state, action) {
             return {
                 ...state,
                 shouldSync: false,
-                syncState: SYNCHRONIZED
+                syncState: SYNC_STATE.SYNCHRONIZED
             }
         case actions.SYNCHRONIZE:
             return {
                 ...state,
-                syncState: SYNCHRONIZING,
+                syncState: SYNC_STATE.SYNCHRONIZING,
                 shouldSync: false
             }
         case actions.SYNC_SUCCESS:
             return {
                 ...state,
-                syncState: SYNCHRONIZED,
+                syncState: SYNC_STATE.SYNCHRONIZED,
                 lastSync: new Date(),
                 shouldSync: false
             }
         case actions.CONTENT_CHANGED:
             return {
                 ...state,
-                syncState: NOT_SYNCED,
+                syncState: SYNC_STATE.NOT_SYNCED,
                 shouldSync: false
             }
         case actions.SYNC_FAILURE:
             return {
                 ...state,
-                syncState: NOT_SYNCED,
+                syncState: SYNC_STATE.NOT_SYNCED,
                 shouldSync: false
             }
         case actions.IS_STALE:
             return {
                 ...state,
-                syncState: STALE,
+                syncState: SYNC_STATE.STALE,
                 shouldSync: false
             }
         default:
@@ -69,8 +77,15 @@ function cloudReducer(state, action) {
     }
 }
 
-const initialState = {
-    syncState: NOT_SYNCED,
+interface CloudSyncInterface {
+    syncState: SYNC_STATE
+    lastEdit: Date
+    lastSync: Date
+    shouldSync: boolean
+}
+
+const initialState: CloudSyncInterface = {
+    syncState: SYNC_STATE.NOT_SYNCED,
     lastEdit: undefined,
     lastSync: undefined,
     shouldSync: false
@@ -83,7 +98,7 @@ export default function CloudSyncProvider({ children }) {
     const observedIds = useRef([])
 
     const [cloudState, cloudDispatch] = useReducer(cloudReducer, initialState)
-    const autosaverTimeout = useRef()
+    const autosaverTimeout = useRef<NodeJS.Timeout>()
 
     const {
         syncState,
@@ -109,7 +124,9 @@ export default function CloudSyncProvider({ children }) {
             })
             .subscribe()
 
-        return () => mySubscription.unsubscribe()
+        return () => {
+            mySubscription.unsubscribe()
+        }
     }, [])
 
 
@@ -154,7 +171,9 @@ export default function CloudSyncProvider({ children }) {
         }
     }
 
-    useEffect(fetchFromRemote, [user, setContent])
+    useEffect(() => {
+        fetchFromRemote()
+    }, [user, setContent])
 
     const handleAutoSave = async () => {
         if (shouldSync) {
@@ -182,7 +201,9 @@ export default function CloudSyncProvider({ children }) {
         }
     }
 
-    useEffect(handleAutoSave, [cloudState])
+    useEffect(() => {
+        handleAutoSave()
+    }, [cloudState])
 
     const longTimeSinceLastSync = () => !lastSync || (new Date().getTime() - lastSync) > 2000
 
@@ -200,7 +221,7 @@ export default function CloudSyncProvider({ children }) {
         setLocalContent(defaultContent)
     }
 
-    const exported = {
+    const exported: CloudContextInterface = {
         syncState,
         lastSync,
         cloudDispatch,
@@ -213,6 +234,4 @@ export default function CloudSyncProvider({ children }) {
             {children}
         </CloudContext.Provider>
     )
-
-
 }

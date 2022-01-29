@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function useStickyState(defaultValue, key) {
-    const previousValue = useRef(null)
-
     const [value, setValue] = useState(() => {
         if (typeof window === 'undefined') {
             return defaultValue

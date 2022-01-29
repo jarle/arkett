@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill';
 
 export default function ConfiguredEditor(props) {
-    const quillRef = useRef()
+    const quillRef = useRef(null)
 
     useEffect(() => {
         quillRef.current.focus()

@@ -1,6 +1,6 @@
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useToast } from '@chakra-ui/react';
-import { React, useContext } from 'react';
+import React, { useContext } from 'react';
 import { FcFeedback } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 import { AuthContext } from '../state/AuthProvider';
@@ -22,7 +22,7 @@ export default function AccountMenu() {
 
         toast({
             title: "Signed out successfully.",
-            isCloseable: true,
+            isClosable: true,
             status: 'success',
             position: 'top-right'
         })

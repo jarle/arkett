@@ -30,7 +30,9 @@ export default function Error({ error }) {
     }
 
     useEffect(() => {
-        router.push('/')
+        router.push("/", null, {
+            shallow: true
+        })
     }, [])
 
     return <Container
