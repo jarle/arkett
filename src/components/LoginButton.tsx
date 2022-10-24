@@ -9,7 +9,7 @@ export default function Auth() {
   const logInButton = () => {
     return (
       <Link href='login'>
-        <Button shadow={'md'} colorScheme={'green'}>
+        <Button shadow={'md'} colorScheme={'green'} disabled={true}>
           Log in
         </Button>
       </Link>
